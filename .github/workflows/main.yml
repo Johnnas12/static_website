@@ -28,10 +28,10 @@ jobs:
       - name: Upload files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist  # Ensure you're uploading the correct files (e.g., after build)
-          artifact-name: site-artifact  # Optional custom name
+          path: ./dist  # Ensure this path is correct and exists
+          name: site-artifact  # Correct input name
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
-          artifact-name: site-artifact  # Match the artifact name if you specified one
+          name: site-artifact  # Correct artifact name
