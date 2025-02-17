@@ -17,13 +17,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-        with:
-          enablement: true  # Optional if Pages is already set up
-
       - name: Upload files
-        uses: actions/upload-pages-artifact@v3  # Updated to v3
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .  # Upload everything in the repository
 
