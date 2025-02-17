@@ -17,21 +17,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Static Site (Optional if you need to build first)
-        run: |
-          # Add any necessary build commands here
-          echo "Building site..."
-
-      - name: List files in the directory
-        run: ls -alh  # Debug step to verify files
+      - name: List files in the repository
+        run: ls -alh  # This will help you verify that your files are in the right place
 
       - name: Upload files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist  # Ensure this path is correct and exists
-          name: site-artifact  # Correct input name
+          path: ./  # Upload the entire directory (root)
+          name: site-artifact  # The name of the artifact
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
-          name: site-artifact  # Correct artifact name
+          name: site-artifact  # Use the same artifact name here
