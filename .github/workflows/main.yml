@@ -24,9 +24,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./  # Upload the entire directory (root)
-          name: site-artifact  # The name of the artifact
+          artifact_name: site-artifact  # Correct artifact name
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
-          name: site-artifact  # Use the same artifact name here
+          artifact_name: site-artifact  # Correct artifact name here
