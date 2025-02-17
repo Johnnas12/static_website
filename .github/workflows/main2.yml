@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # or your main branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+        with:
+          # Specify if you are using a static site generator
+          # static_site_generator: true  # Only use if you're using a static site generator (e.g., Jekyll, Hugo)
+
+      # Optional: Only if you need to run a build process (e.g., for static site generators like Jekyll, Hugo)
+      - name: Build website (if needed)
+        run: |
+          # Example: If you use a static site generator like Jekyll, Hugo, etc.
+          # run: bundle exec jekyll build
+          echo "No build process is needed." # Placeholder if not building
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './'  # Path to the directory containing your built website files
+          artifact_name: site-artifact  # The name of the artifact you're uploading
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: site-artifact  # The same artifact name used in the upload step
+          environment: github-pages
+          token: ${{ secrets.GITHUB_TOKEN }} # Important! Use the built-in GITHUB_TOKEN secret
+
+      - name: View deployment status
+        if: always()
+        run: |
+          echo "Deployment status: ${{ steps.deployment.outcome }}"
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
