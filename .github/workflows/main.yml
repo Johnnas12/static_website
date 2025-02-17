@@ -1,32 +1,43 @@
-name: Deploy Static Site
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Deploy on main branch push
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+      - main # or your main branch name
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: List files in the repository
-        run: ls -alh  # This will help you verify that your files are in the right place
-
-      - name: Upload files
-        uses: actions/upload-pages-artifact@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
         with:
-          path: ./  # Upload the entire directory (root)
-          artifact_name: site-artifact  # Correct artifact name
+          # Specify the directory containing your static website files
+          static_site_generator: true # this is important if you are not using a static site generator
+
+      - name: Build website (if needed) # Only if you have a build process
+        # Example: If you use a static site generator like Jekyll, Hugo, etc.
+        # run: bundle exec jekyll build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          # Path to the directory containing your built website files
+          path: './' # since your index.html is in the root directory
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v2
         with:
-          artifact_name: site-artifact  # Correct artifact name here
+          artifact: github-pages
+          environment: github-pages
+          token: ${{ secrets.GITHUB_TOKEN }} # Important! Use the built-in GITHUB_TOKEN secret
+
+      - name: View deployment status
+        if: always()
+        run: |
+          echo "Deployment status: ${{ steps.deployment.outcome }}"
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
